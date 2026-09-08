@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product | Signeon360</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<div class="announce-bar">Free shipping for all orders above £49. Only this week</div>
+
+<header>
+  <div class="header-top">
+    <div class="container">
+      <div class="socials">
+        <a href="https://www.instagram.com/signeon360/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@sign_neon360" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.youtube.com/@SigNeon360" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.facebook.com/signeon360" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+      <div class="top-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="top-phone"><i class="fa-solid fa-phone"></i> +44 7768 855343</div>
+    </div>
+  </div>
+
+  <div class="header-main">
+    <nav class="navbar container">
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+
+      <a href="index.html" class="logo">
+        <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+        <span class="logo-text"><strong>Sig<span>Neon</span>360</strong><small>Thinking Signs</small></span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html" class="active">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <form class="header-search">
+        <input type="text" placeholder="Search for neon signs...">
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+
+      <div class="nav-icons">
+        <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+        <a href="#" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+        <a href="cart.html" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count">0</span></a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container" style="padding-top:24px;">
+    <div class="breadcrumb" style="justify-content:flex-start;">
+      <a href="index.html">Home</a><span>›</span>
+      <a href="shop.html">Shop</a><span>›</span>
+      <span id="breadcrumb-product" style="color:var(--gray);">Product</span>
+    </div>
+  </div>
+
+  <section class="product-detail">
+    <div class="container product-detail-grid">
+
+      <div class="pd-gallery">
+        <div class="gallery-main" id="gallery-main"><i class="fa-solid fa-image"></i></div>
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          <div class="active"><i class="fa-solid fa-image"></i></div>
+        </div>
+      </div>
+
+      <div class="pd-info">
+        <span class="pd-category" id="pd-category">Neon Signs</span>
+        <h1 class="pd-title" id="pd-title">Loading...</h1>
+
+        <div class="pd-meta">
+          <span>☆☆☆☆☆ 0 Reviews</span>
+          <a href="#">Write a review</a>
+        </div>
+
+        <div class="pd-info-row">
+          <div><strong>Product Code</strong><span id="pd-sku">—</span></div>
+          <div><strong>Availability</strong><span id="pd-availability">—</span></div>
+        </div>
+
+        <div class="pd-price" id="pd-price">
+          <span class="now">—</span>
+        </div>
+
+        <div class="qty-row">
+          <div class="qty-box">
+            <button class="qty-minus" type="button" id="qty-minus">−</button>
+            <input type="text" value="1" readonly id="qty-input">
+            <button class="qty-plus" type="button" id="qty-plus">+</button>
+          </div>
+        </div>
+
+        <div class="pd-actions">
+          <button class="btn btn-neon" id="add-to-cart-btn" disabled style="opacity:.5;cursor:not-allowed;"><i class="fa-solid fa-bag-shopping"></i> Add to Cart</button>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><i class="fa-regular fa-heart"></i></button>
+        </div>
+
+        <div class="pd-share">
+          <span>Share:</span>
+          <a href="https://www.facebook.com/signeon360" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+          <a href="https://www.instagram.com/signeon360/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container pd-tabs">
+      <div class="tab-heads">
+        <button class="active" data-tab="tab-description">Description</button>
+        <button data-tab="tab-spec">Specification</button>
+        <button data-tab="tab-reviews">Reviews (0)</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-description">
+        <p id="pd-description">Product description will appear here once this item is added to the catalogue. Every Signeon360 sign is custom-made to order, energy-efficient, and built to last — designed and assembled in the UK.</p>
+      </div>
+
+      <div class="tab-panel" id="tab-spec">
+        <div class="spec-grid" id="pd-spec-grid">
+          <div class="spec-item"><strong>Size</strong>—</div>
+          <div class="spec-item"><strong>Colour</strong>—</div>
+          <div class="spec-item"><strong>Backboard</strong>—</div>
+          <div class="spec-item"><strong>Power</strong>—</div>
+          <div class="spec-item"><strong>Material</strong>—</div>
+          <div class="spec-item"><strong>Warranty</strong>—</div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-reviews">
+        <p>No reviews yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-heading">
+        <span class="eyebrow">You may also like</span>
+        <h2>Related Signs</h2>
+      </div>
+      <div class="product-grid" id="related-products">
+        <div class="empty-state">
+          <i class="fa-solid fa-bolt"></i>
+          <h3>Related products coming soon</h3>
+          <p>This section will show similar signs once products are added.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="newsletter">
+  <div class="container">
+    <div>
+      <h3>Join our newsletter</h3>
+      <p>Get 10% discount for your first order</p>
+    </div>
+    <form class="newsletter-form" data-placeholder-form="Thanks for subscribing!">
+      <input type="email" placeholder="Your email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo">
+          <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span class="logo-text"><strong>Sig<span>Neon</span>360</strong><small>Thinking Signs</small></span>
+        </a>
+        <p>Shop our trendy collection or create your own personalised neon art. Energy-efficient, safe, and made in the UK. Free shipping available.</p>
+        <p class="footer-company">Company Number: 15834325</p>
+      </div>
+      <div class="footer-col">
+        <h4>Store</h4>
+        <ul>
+          <li><a href="shop.html">Christmas</a></li>
+          <li><a href="shop.html">Halloween</a></li>
+          <li><a href="shop.html">Animal &amp; Pets</a></li>
+          <li><a href="shop.html">Bedroom</a></li>
+          <li><a href="shop.html">Neon Bar Signs</a></li>
+          <li><a href="shop.html">Weddings</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Warranty</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">My account</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="#">My orders</a></li>
+          <li><a href="#">Wishlist</a></li>
+          <li><a href="#">Affiliate Program</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© Copyright SigNeon360. All Rights Reserved</p>
+      <div class="footer-bottom-links">
+        <a href="#">Terms of Use</a>
+        <a href="#">Affiliate Program</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<button class="back-to-top" id="back-to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script src="JS/price-format.js"></script>
+<script src="JS/product.js"></script>
+<script src="JS/script.js"></script>
+</body>
+</html>
