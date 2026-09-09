@@ -10,8 +10,7 @@ const container = document.getElementById("checkout-container");
 
 // Shipping countries + payment methods are configured from the shared
 // Admin panel (Admin -> Shipping Countries / Payment Methods) — never
-// hardcoded here. Stripe is left out for now (checkout.html doesn't
-// load stripe.js yet); every other enabled method works as-is.
+// hardcoded here.
 async function loadShippingCountries() {
     try {
         const response = await fetch(`${API_BASE}/shipping-countries`);
@@ -27,14 +26,23 @@ async function loadPaymentMethods() {
     try {
         const response = await fetch(`${API_BASE}/payment-methods`);
         const data = await response.json();
-        if (data.success && data.methods.length > 0) {
-            return data.methods.filter(m => m.key !== "stripe");
-        }
+        if (data.success && data.methods.length > 0) return data.methods;
     } catch (error) {
         console.error("Failed to load payment methods:", error);
     }
     return [{ key: "cod", label: "Cash on Delivery", country_only: null }];
 }
+
+// ========================================
+// STRIPE CONFIG
+// Only needs the PUBLISHABLE key (safe for the browser) — never put the
+// secret key here. Replace with the real publishable key when ready.
+// ========================================
+
+const STRIPE_PUBLISHABLE_KEY = "pk_test_REPLACE_WITH_YOUR_PUBLISHABLE_KEY";
+
+let stripe = null;
+let cardElement = null;
 
 function getCart() {
     try {
@@ -50,6 +58,17 @@ function clearCart() {
 }
 
 function paymentPanelHTML(key) {
+    if (key === "stripe") {
+        return `
+            <div id="payment-panel-stripe" class="payment-panel" style="display:none;margin-top:14px;">
+                <div class="form-group">
+                    <label>Card Details</label>
+                    <div id="stripe-card-element" style="padding:13px 16px;border:1px solid var(--border);border-radius:8px;"></div>
+                    <div id="stripe-card-errors" style="color:#c0392b;font-size:13px;margin-top:8px;"></div>
+                </div>
+            </div>
+        `;
+    }
     if (key === "bank_transfer") {
         return `
             <div id="payment-panel-bank_transfer" class="payment-panel" style="display:none;margin-top:14px;">
@@ -198,6 +217,38 @@ function updatePaymentUI() {
     document.querySelectorAll(".payment-panel").forEach(panel => {
         panel.style.display = panel.id === `payment-panel-${method}` ? "block" : "none";
     });
+
+    const submitButton = document.getElementById("place-order-btn");
+    if (method === "stripe") {
+        if (submitButton) submitButton.textContent = "Pay & Place Order";
+        initStripeElements();
+    } else if (submitButton) {
+        submitButton.textContent = "Place Order";
+    }
+}
+
+// ========================================
+// STRIPE ELEMENTS SETUP (lazy — only once)
+// ========================================
+
+function initStripeElements() {
+    if (stripe && cardElement) return; // already set up
+
+    if (!window.Stripe) {
+        console.error("Stripe.js not loaded — checkout.html is missing <script src=\"https://js.stripe.com/v3/\"></script>.");
+        return;
+    }
+
+    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+
+    const elements = stripe.elements();
+    cardElement = elements.create("card");
+    cardElement.mount("#stripe-card-element");
+
+    cardElement.on("change", (event) => {
+        const errorBox = document.getElementById("stripe-card-errors");
+        if (errorBox) errorBox.textContent = event.error ? event.error.message : "";
+    });
 }
 
 async function handleSubmit(event) {
@@ -248,9 +299,48 @@ async function handleSubmit(event) {
     }
 
     submitButton.disabled = true;
-    submitButton.textContent = "Placing order...";
 
     try {
+        // ---- STRIPE: create + confirm the card payment first ----
+        if (paymentMethod === "stripe") {
+            submitButton.textContent = "Processing payment...";
+
+            if (!stripe || !cardElement) {
+                throw new Error("Card payment isn't ready yet. Please try again in a moment.");
+            }
+
+            const intentResponse = await fetch(`${API_BASE}/create-payment-intent`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: subtotal })
+            });
+
+            const intentData = await intentResponse.json();
+
+            if (!intentResponse.ok || !intentData.success) {
+                throw new Error(intentData.message || "Could not start payment.");
+            }
+
+            const result = await stripe.confirmCardPayment(intentData.clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: {
+                        name: payload.customer.fullName,
+                        email: payload.customer.email || undefined,
+                        phone: payload.customer.phone || undefined
+                    }
+                }
+            });
+
+            if (result.error) {
+                throw new Error(result.error.message || "Card payment failed.");
+            }
+
+            payload.paymentReference = result.paymentIntent.id;
+        }
+
+        submitButton.textContent = "Placing order...";
+
         const response = await fetch(`${API_BASE}/orders`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -269,7 +359,7 @@ async function handleSubmit(event) {
         console.error("ORDER SUBMIT ERROR:", error);
         errorBox.textContent = error.message || "Something went wrong placing your order. Please try again.";
         submitButton.disabled = false;
-        submitButton.textContent = "Place Order";
+        updatePaymentUI();
     }
 }
 
