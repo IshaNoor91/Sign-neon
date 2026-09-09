@@ -22,6 +22,7 @@ const qtyInput = document.getElementById("qty-input");
 const qtyMinus = document.getElementById("qty-minus");
 const qtyPlus = document.getElementById("qty-plus");
 const addToCartBtn = document.getElementById("add-to-cart-btn");
+const buyNowBtn = document.getElementById("buy-now-btn");
 const relatedContainer = document.getElementById("related-products");
 
 // ========================================
@@ -105,12 +106,13 @@ function displayProduct(product) {
         pdCategory.textContent = fullName.split(">").map(p => p.trim()).pop();
     }
 
-    // Enable add to cart
-    if (addToCartBtn) {
-        addToCartBtn.disabled = false;
-        addToCartBtn.style.opacity = "";
-        addToCartBtn.style.cursor = "";
-    }
+    // Enable add to cart / buy now
+    [addToCartBtn, buyNowBtn].forEach(btn => {
+        if (!btn) return;
+        btn.disabled = false;
+        btn.style.opacity = "";
+        btn.style.cursor = "";
+    });
 }
 
 // ========================================
@@ -169,35 +171,46 @@ function updateCartBadge() {
     });
 }
 
+function addProductToCart(product, quantity) {
+    const cart = getCart();
+    const existing = cart.find(item => Number(item.id) === Number(product.id));
+    const price = Number(product.sale_price || product.regular_price || 0);
+    const image = product.images ? product.images.split(",")[0].trim() : "";
+
+    if (existing) {
+        existing.quantity += quantity;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price,
+            currency: product.currency || "GBP",
+            image,
+            quantity
+        });
+    }
+
+    saveCart(cart);
+}
+
 function setupAddToCart(product) {
-    if (!addToCartBtn) return;
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener("click", () => {
+            addProductToCart(product, Number(qtyInput?.value || 1));
 
-    addToCartBtn.addEventListener("click", () => {
-        const quantity = Number(qtyInput?.value || 1);
-        const cart = getCart();
-        const existing = cart.find(item => Number(item.id) === Number(product.id));
-        const price = Number(product.sale_price || product.regular_price || 0);
-        const image = product.images ? product.images.split(",")[0].trim() : "";
+            addToCartBtn.innerHTML = `<i class="fa-solid fa-check"></i> Added to Cart`;
+            setTimeout(() => {
+                addToCartBtn.innerHTML = `<i class="fa-solid fa-bag-shopping"></i> Add to Cart`;
+            }, 1800);
+        });
+    }
 
-        if (existing) {
-            existing.quantity += quantity;
-        } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price,
-                currency: product.currency || "GBP",
-                image,
-                quantity
-            });
-        }
-
-        saveCart(cart);
-        addToCartBtn.innerHTML = `<i class="fa-solid fa-check"></i> Added to Cart`;
-        setTimeout(() => {
-            addToCartBtn.innerHTML = `<i class="fa-solid fa-bag-shopping"></i> Add to Cart`;
-        }, 1800);
-    });
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener("click", () => {
+            addProductToCart(product, Number(qtyInput?.value || 1));
+            window.location.href = "checkout.html";
+        });
+    }
 }
 
 // ========================================
