@@ -28,7 +28,7 @@ const filtersClose = document.getElementById("filters-close");
 const mobileFilterToggle = document.getElementById("mobile-filter-toggle");
 
 const filterState = {
-    category: null,
+    category: new URLSearchParams(window.location.search).get("category") || null,
     minPrice: null,
     maxPrice: null,
     sort: "default"
@@ -66,7 +66,10 @@ function renderCategoryFilterList(categories) {
                 <span><input type="checkbox" data-slug="${cat.slug}"> ${displayName}</span>
             </label>
         `;
-        li.querySelector("input").addEventListener("change", (e) => {
+        const checkbox = li.querySelector("input");
+        if (filterState.category === cat.slug) checkbox.checked = true;
+
+        checkbox.addEventListener("change", (e) => {
             categoryFilterList.querySelectorAll("input[type=checkbox]").forEach(cb => {
                 if (cb !== e.target) cb.checked = false;
             });

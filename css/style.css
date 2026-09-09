@@ -282,6 +282,10 @@ h1,h2,h3,h4,h5{font-weight:700;line-height:1.2;}
 .breadcrumb a:hover{color:var(--neon);}
 .breadcrumb span{color:var(--neon);}
 
+/* ---------- Category marquee (home) ---------- */
+.cat-marquee-link{color:#ccc;font-size:13px;transition:var(--transition);}
+.cat-marquee-link:hover{color:var(--neon);}
+
 /* ---------- Hero (Home) ---------- */
 .hero{
   background:var(--black);

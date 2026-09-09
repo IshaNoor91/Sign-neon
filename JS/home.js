@@ -7,7 +7,8 @@
 
 (function () {
     const container = document.getElementById("featured-products");
-    if (!container) return;
+    const heroVisual = document.getElementById("hero-visual");
+    if (!container && !heroVisual) return;
 
     const API_BASE = "https://vintage-artisans-production.up.railway.app/api";
 
@@ -15,6 +16,16 @@
         .then(response => response.json())
         .then(data => {
             if (!data.success || !Array.isArray(data.products) || data.products.length === 0) return;
+
+            // Hero — real photo of the first featured sign, in place of the
+            // dashed placeholder box.
+            const heroImage = data.products[0].images ? data.products[0].images.split(",")[0].trim() : "";
+            if (heroVisual && heroImage) {
+                heroVisual.style.border = "none";
+                heroVisual.innerHTML = `<img src="${heroImage}" alt="${data.products[0].name}" style="width:100%;height:100%;object-fit:cover;border-radius:24px;">`;
+            }
+
+            if (!container) return;
 
             container.innerHTML = data.products.map(product => {
                 const image = product.images ? product.images.split(",")[0].trim() : "";
